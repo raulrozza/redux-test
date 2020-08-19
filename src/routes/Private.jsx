@@ -20,7 +20,7 @@ Private.defaultProps = {
 };
 
 Private.propTypes = {
-  component: PropTypes.node.isRequired,
+  component: PropTypes.func.isRequired,
   isClosed: PropTypes.bool,
 };
 
