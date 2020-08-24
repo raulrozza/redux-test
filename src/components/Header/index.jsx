@@ -10,11 +10,11 @@ function Header() {
       <Link to="/">
         <FaHome />
       </Link>
-      <Link to="/">
-        <FaSignInAlt />
-      </Link>
-      <Link to="/">
+      <Link to="/register">
         <FaUserAlt />
+      </Link>
+      <Link to="/login">
+        <FaSignInAlt />
       </Link>
     </Nav>
   );
