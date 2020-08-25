@@ -6,7 +6,7 @@ export default reducers => {
     {
       key: 'Redux Test',
       storage,
-      whitelist: [],
+      whitelist: ['auth'],
     },
     reducers,
   );
