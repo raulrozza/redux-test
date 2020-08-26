@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+
+// Components
+import Loading from '../../components/Loading';
+
+// Libs
 import { get } from 'lodash';
 
+// Redux
+import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../store/modules/auth/actions';
 
+// Styles
 import Container from '../../styles/Container';
 import { Form } from './styles';
 
@@ -14,6 +21,8 @@ const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const isLoading = useSelector(state => state.auth.isLoading);
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -51,6 +60,8 @@ const Login = () => {
 
         <button type="submit">Acessar</button>
       </Form>
+
+      <Loading isLoading={isLoading} />
     </Container>
   );
 };

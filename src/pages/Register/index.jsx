@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
+
+// Components
+import Loading from '../../components/Loading';
+
+// Libs
+import { toast } from 'react-toastify';
 
 // Styles
 import Container from '../../styles/Container';
@@ -13,11 +18,13 @@ const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const { push } = useHistory();
 
   const handleSubmit = async event => {
     event.preventDefault();
+    setIsLoading(true);
 
     try {
       await api.post('/users', {
@@ -30,6 +37,8 @@ const Register = () => {
 
       return push('/login');
     } catch (error) {
+      setIsLoading(false);
+
       if (error.isAxiosError) {
         const { errors } = error.response.data;
 
@@ -76,6 +85,8 @@ const Register = () => {
 
         <button type="submit">Criar minha conta</button>
       </Form>
+
+      <Loading isLoading={isLoading} />
     </Container>
   );
 };

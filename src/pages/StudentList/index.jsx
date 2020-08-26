@@ -1,25 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { get } from 'lodash';
+import { Link } from 'react-router-dom';
 
-import api from '../../services/api';
+// Components
+import Loading from '../../components/Loading';
 
+// Icons
 import { FaUserCircle, FaEdit, FaWindowClose } from 'react-icons/fa';
 
+// Libs
+import { get } from 'lodash';
+
+// Services
+import api from '../../services/api';
+
+// Styles
 import Container from '../../styles/Container';
 import { StudentContainer, ProfilePicture } from './styles';
-import { Link } from 'react-router-dom';
 
 const StudentList = () => {
   const [students, setStudents] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
       try {
+        setIsLoading(true);
+
         const { data } = await api.get('/students');
 
-        console.log(data);
-
         setStudents(data);
+        setIsLoading(false);
       } catch (error) {
         console.error(error);
       }
@@ -53,6 +63,8 @@ const StudentList = () => {
           </div>
         ))}
       </StudentContainer>
+
+      <Loading isLoading={isLoading} />
     </Container>
   );
 };
