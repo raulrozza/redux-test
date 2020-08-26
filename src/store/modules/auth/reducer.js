@@ -9,10 +9,31 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case types.EDIT_REQUEST:
+    case types.REGISTER_REQUEST:
     case types.LOGIN_REQUEST:
       return {
         ...state,
         isLoading: true,
+      };
+
+    case types.EDIT_FAILURE:
+    case types.REGISTER_SUCCESS:
+    case types.REGISTER_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case types.EDIT_SUCCESS:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          name: action.payload.name,
+          email: action.payload.email,
+        },
+        isLoading: false,
       };
 
     case types.LOGIN_SUCCESS:

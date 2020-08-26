@@ -16,11 +16,59 @@ function* loginRequest({ payload }) {
 
     api.defaults.headers.Authorization = `Bearer ${data.token}`;
 
-    history.push(payload.prevPath);
+    return history.push(payload.prevPath);
   } catch (error) {
     toast.error('Usuário ou senha inválidos.');
 
-    yield put(actions.loginFailure());
+    return yield put(actions.loginFailure());
+  }
+}
+
+function* registerRequest({ payload }) {
+  try {
+    yield call(api.post, '/users', payload);
+
+    yield put(actions.registerSuccess());
+
+    toast.success('Cadastro efetuado com sucesso.');
+
+    return history.push('/login');
+  } catch (error) {
+    if (error.isAxiosError) {
+      const { errors } = error.response.data;
+
+      toast.error('Cadastro não efetuado.');
+      errors.forEach(error => toast.error(error));
+    } else toast.error('Houve um problema.');
+
+    return yield put(actions.registerFailure());
+  }
+}
+
+function* editRequest({ payload }) {
+  const { id, ...data } = payload;
+
+  try {
+    yield call(api.put, '/users', data);
+
+    yield put(actions.editSuccess(data));
+
+    return toast.success('Dados alterados com sucesso.');
+  } catch (error) {
+    if (error.isAxiosError) {
+      const { errors } = error.response.data;
+
+      if (error.response.status === 401) {
+        toast.error('Você precisa fazer login.');
+        yield put(actions.loginFailure());
+        return history.push('/login');
+      }
+
+      toast.error('Alteração não efetuada.');
+      errors.forEach(error => toast.error(error));
+    } else toast.error('Houve um problema.');
+
+    return yield put(actions.editFailure());
   }
 }
 
@@ -34,5 +82,7 @@ function persistRehydrate({ payload }) {
 
 export default all([
   takeLatest(types.LOGIN_REQUEST, loginRequest),
+  takeLatest(types.REGISTER_REQUEST, registerRequest),
+  takeLatest(types.EDIT_REQUEST, editRequest),
   takeLatest(types.PERSIST_REHYDRATE, persistRehydrate),
 ]);
