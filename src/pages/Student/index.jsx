@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
 
 // Libs
-import { useRouteMatch, useHistory } from 'react-router-dom';
+import { useRouteMatch, useHistory, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 // Components
 import Loading from '../../components/Loading';
 
+// Icons
+import { FaUserCircle, FaEdit } from 'react-icons/fa';
+
 // Styles
 import Container from '../../styles/Container';
-import { Form } from './styles';
+import { Form, ProfilePicture } from './styles';
+
+// Config
+import colors from '../../config/colors';
 
 // Services
 import api from '../../services/api';
@@ -23,6 +29,7 @@ const Student = () => {
   const [email, setEmail] = useState('');
   const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
+  const [picture, setPicture] = useState(null);
 
   const [loading, setLoading] = useState(true);
 
@@ -39,6 +46,9 @@ const Student = () => {
         setAge(data.age);
         setHeight(data.height);
 
+        if (data.pictures && data.pictures[0] && data.pictures[0].url)
+          setPicture(data.pictures[0].url);
+
         setLoading(false);
       } catch (error) {
         if (error.isAxiosError) {
@@ -47,6 +57,8 @@ const Student = () => {
           toast.error('Houve um erro ao buscar os estudantes.');
           errors.forEach(error => toast.error(error));
         } else toast.error('Houve um problema.');
+
+        alert(error);
 
         push('/');
       }
@@ -103,6 +115,19 @@ const Student = () => {
       <h1>{params.id ? 'Editar aluno' : 'Criar aluno'}</h1>
 
       <Form onSubmit={handleSubmit}>
+        {params.id && (
+          <ProfilePicture>
+            {picture ? (
+              <img src={picture} alt={firstname} />
+            ) : (
+              <FaUserCircle size={180} color={colors.primaryDarkColor} />
+            )}
+            <Link to={`/picture/${params.id}`}>
+              <FaEdit size={24} />
+            </Link>
+          </ProfilePicture>
+        )}
+
         <input
           type="text"
           value={firstname}
