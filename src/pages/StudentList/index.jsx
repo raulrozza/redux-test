@@ -16,7 +16,7 @@ import api from '../../services/api';
 
 // Styles
 import Container from '../../styles/Container';
-import { StudentContainer, ProfilePicture } from './styles';
+import { StudentContainer, ProfilePicture, NewStudent } from './styles';
 
 const StudentList = () => {
   const [students, setStudents] = useState([]);
@@ -70,6 +70,7 @@ const StudentList = () => {
   return (
     <Container>
       <h1>Alunos</h1>
+      <NewStudent to="/student">Novo aluno</NewStudent>
 
       <StudentContainer>
         {students.map(student => (
