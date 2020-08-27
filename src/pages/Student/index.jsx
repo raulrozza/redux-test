@@ -46,8 +46,8 @@ const Student = () => {
         setAge(data.age);
         setHeight(data.height);
 
-        if (data.pictures && data.pictures[0] && data.pictures[0].url)
-          setPicture(data.pictures[0].url);
+        if (data.Pictures && data.Pictures[0] && data.Pictures[0].url)
+          setPicture(data.Pictures[0].url);
 
         setLoading(false);
       } catch (error) {

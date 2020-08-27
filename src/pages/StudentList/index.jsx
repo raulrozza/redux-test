@@ -76,8 +76,8 @@ const StudentList = () => {
         {students.map(student => (
           <div key={String(student.id)}>
             <ProfilePicture>
-              {get(student, 'pictures[0].url', null) ? (
-                <img src={student.pictures[0].url} alt={student.firstname} />
+              {get(student, 'Pictures[0].url', null) !== null ? (
+                <img src={student.Pictures[0].url} alt={student.firstname} />
               ) : (
                 <FaUserCircle size={36} />
               )}
