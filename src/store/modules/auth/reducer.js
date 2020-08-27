@@ -1,4 +1,5 @@
 import * as types from '../types';
+import api from '../../../services/api';
 
 const initialState = {
   isLoggedIn: false,
@@ -46,6 +47,7 @@ export default function (state = initialState, action) {
       };
 
     case types.LOGIN_FAILURE:
+      delete api.defaults.headers.Authorization;
       return initialState;
 
     default:
